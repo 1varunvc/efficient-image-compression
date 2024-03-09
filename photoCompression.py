@@ -97,8 +97,8 @@ def compress_images_in_directory(source_dir, target_dir, max_size_mb=2, quality_
 
 if __name__ == '__main__':
     freeze_support()
-    source_dir = "V:\Photo Compression (Varun)\Source Directory"
-    target_dir = "V:\Photo Compression (Varun)\Target Directory"
+    source_dir = "source"
+    target_dir = "target"
     compress_images_in_directory(source_dir, target_dir)
     
     # Add a delay to ensure all processes have completed before exiting
