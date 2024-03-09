@@ -1,19 +1,21 @@
 import logging
-from PIL import Image
 import os
-from skimage.metrics import structural_similarity as ssim
+
 import numpy as np
+from PIL import Image
+from skimage.metrics import structural_similarity as ssim
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, filename='image_compression.log', filemode='w',
                     format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 def calculate_ssim(image_a, image_b):
     """Calculate the Structural Similarity Index (SSIM) between two images."""
     # Determine the minimum dimension of the images to set an appropriate win_size
     min_dimension = min(image_a.shape[0], image_a.shape[1], image_b.shape[0], image_b.shape[1])
     win_size = min(7, min_dimension // 2 * 2 + 1)  # Ensure win_size is odd and less than the smallest dimension
-    
+
     print(f"Image A dimensions: {image_a.shape}")
     print(f"Image B dimensions: {image_b.shape}")
     print(f"Using win_size: {win_size}")
@@ -21,14 +23,16 @@ def calculate_ssim(image_a, image_b):
     ssim_index = ssim(image_a, image_b, multichannel=True, win_size=win_size, channel_axis=-1)
     return ssim_index
 
-def compress_image_flexible(source_path, target_path, max_size_mb=2, quality_threshold=50, ssim_threshold=0.95, size_tolerance=0.1, summary_filename='compression_summary.txt'):
+
+def compress_image_flexible(source_path, target_path, max_size_mb=2, quality_threshold=50, ssim_threshold=0.95,
+                            size_tolerance=0.1, summary_filename='compression_summary.txt'):
     original_img = Image.open(source_path).convert('RGB')
     original_img_array = np.array(original_img)
-    
+
     original_size_bytes = os.path.getsize(source_path)
     max_size_bytes = max_size_mb * 1024 * 1024
     size_tolerance_bytes = max_size_bytes * size_tolerance
-    
+
     low, high = quality_threshold, 95
     optimal_quality = high
     final_ssim = 0
@@ -64,7 +68,8 @@ def compress_image_flexible(source_path, target_path, max_size_mb=2, quality_thr
     # Print summary to console
     print(log_and_summary)
 
+
 # Example usage
-source_path = "V:\Photo Compression (Varun)\IMG_20181020_072308268.jpg"
-target_path = "V:\Photo Compression (Varun)\COMPRESSED_IMG_20181020_072308268.jpg"
+source_path = "source1.jpg"
+target_path = "target1.jpg"
 compress_image_flexible(source_path, target_path)
