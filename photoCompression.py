@@ -70,6 +70,6 @@ def compress_image_flexible(source_path, target_path, max_size_mb=2, quality_thr
 
 
 # Example usage
-source_path = "source1.jpg"
-target_path = "target1.jpg"
+source_path = "source/source1.jpg"
+target_path = "target/target1.jpg"
 compress_image_flexible(source_path, target_path)
