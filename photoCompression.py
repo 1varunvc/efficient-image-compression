@@ -13,10 +13,6 @@ def calculate_ssim(image_a, image_b):
     # Determine the minimum dimension of the images to set an appropriate win_size
     min_dimension = min(image_a.shape[0], image_a.shape[1], image_b.shape[0], image_b.shape[1])
     win_size = min(7, min_dimension // 2 * 2 + 1)  # Ensure win_size is odd and less than the smallest dimension
-    
-    print(f"Image A dimensions: {image_a.shape}")
-    print(f"Image B dimensions: {image_b.shape}")
-    print(f"Using win_size: {win_size}")
 
     ssim_index = ssim(image_a, image_b, multichannel=True, win_size=win_size, channel_axis=-1)
     return ssim_index
@@ -35,7 +31,7 @@ def compress_image_flexible(source_path, target_path, max_size_mb=2, quality_thr
 
     while low <= high:
         mid_quality = (low + high) // 2
-        original_img.save(target_path, quality=mid_quality, optimize=True)
+        original_img.save(target_path, quality=mid_quality, optimize=True, exif=original_img.info.get('exif'))
         compressed_img = Image.open(target_path).convert('RGB')
         compressed_img_array = np.array(compressed_img)
         current_ssim = calculate_ssim(original_img_array, compressed_img_array)
